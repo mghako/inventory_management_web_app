@@ -1,30 +1,32 @@
 import React, {useRef, useState} from 'react';
 import { useAuth } from '../context/AuthContext';
+import {Link} from 'react-router-dom'
 
 
 
 const Register = () => {
+    const nameRef = useRef()
     const emailRef = useRef()
     const passwordRef = useRef()
     const {register} = useAuth()
     const [error, setError] = useState('')
+    const [errors, setErrors] = useState('')
     const [loading, setLoading]= useState(false)
     
     const handleSubmit = async (e) => {
-    
         e.preventDefault()
-        try {
-            setLoading(true)
-            await register(emailRef.current.value, passwordRef.current.value)
-        } catch {
-            setLoading(false)
-            setError("Failed to register, please try again later")
-        }
         setLoading(true)
+        const response = await register(nameRef.current.value, emailRef.current.value, passwordRef.current.value)
+        
+        if(response.errors) {
+            setErrors(response.errors)
+        }
+        setLoading(false)
     }
+    
     return (
         <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-            {error && <p className="text-red-600 text-center font-extrabold">{error}</p>}
+            
             <div className="max-w-md w-full space-y-8">
                 <div>
                 <img className="mx-auto h-12 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-600.svg" alt="Workflow" />
@@ -37,14 +39,21 @@ const Register = () => {
                 </div>
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                     <input type="hidden" name="remember" value="true" />
-                    <div className="rounded-md shadow-sm -space-y-px">
-                        <div>
-                        <label htmlFor="email-address" className="sr-only">Email address</label>
-                        <input ref={emailRef} id="email-address" name="email" type="email" autoComplete="email" required className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email address" />
+                    <div className="rounded-md shadow-sm">
+                        <div className="my-4">
+                            { errors.name && <p className="text-red-600 text-left font-bold">{errors.name}</p> }
+                            <label htmlFor="name" className="sr-only">Name</label>
+                            <input ref={nameRef} id="" name="name" type="text" autoComplete="name" required className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Name" />
                         </div>
-                        <div>
-                        <label htmlFor="password" className="sr-only">Password</label>
-                        <input ref={passwordRef} id="password" name="password" type="password" autoComplete="current-password" required className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password" />
+                        <div className="my-4">
+                            { errors.email && <p className="text-red-600 text-left font-bold">{errors.email}</p> }
+                            <label htmlFor="email-address" className="sr-only">Email address</label>
+                            <input ref={emailRef} id="email-address" name="email" type="email" autoComplete="email" required className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Email address" />
+                        </div>
+                        <div className="my-4">
+                            { errors.password && <p className="text-red-600 text-left font-bold">{errors.password}</p> }
+                            <label htmlFor="password" className="sr-only">Password</label>
+                            <input ref={passwordRef} id="password" name="password" type="password" autoComplete="current-password" required className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" placeholder="Password" />
                         </div>
                     </div>
                     
@@ -54,6 +63,10 @@ const Register = () => {
                         </button>
                     </div>
                 </form>
+                <p className="mt-2 text-center text-sm text-gray-600">
+                    <Link to="/login">Already have Account? Login Here</Link>
+                </p>
+                {error && <p className="text-red-600 text-center font-extrabold">{error}</p>}
             </div>
         </div>
     )
