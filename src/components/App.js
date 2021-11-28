@@ -8,17 +8,18 @@ import RequireAuth from './RequireAuth';
 
 function App() {
   return (
-    
     <AuthProvider>
         <Routes>
-          <Route exact path='/' element={<RequireAuth/>}>
-            <Route exact path='/' element={<Dashboard/>}/>
-          </Route>
+          <Route exact path='/' element={
+            <RequireAuth>  
+              <Dashboard/>
+            </RequireAuth>
+            }
+          />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
         </Routes>
     </AuthProvider>
-    
   );
 }
 

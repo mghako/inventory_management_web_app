@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import {Link, useNavigate} from 'react-router-dom'
+import {Link, useNavigate, useLocation} from 'react-router-dom'
 import { useAuth } from '../context/AuthContext';
 
 const Login = () => {
@@ -10,7 +10,9 @@ const Login = () => {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState('')
     const navigate = useNavigate()
-    
+    const location = useLocation()
+    let from = location.state?.from?.path || "/"
+
     const handleLogin = async (e) => {
         e.preventDefault()
         setLoading(true)
@@ -19,7 +21,7 @@ const Login = () => {
         
         if(response && response.status === 500) setError(response.data.message)
 
-        if(response.status == 200) navigate("/")
+        if(response && response.status == 200) navigate(from, {replace: true})
         
         setLoading(false)
         

@@ -1,14 +1,15 @@
 import React from 'react'
-import { useAuth } from '../context/AuthContext'
-import { Navigate, Outlet, useLocation} from 'react-router-dom'
+import { Navigate, useLocation} from 'react-router-dom'
 
 
-const RequireAuth = () => {
+const RequireAuth = ({children}) => {
     const location = useLocation()
-    // const {currentUser} = useAuth()
     const currentUser = JSON.parse(localStorage.getItem('currentUser'))
     console.log("require auth", currentUser)
-    return currentUser ? <Outlet /> : <Navigate to="/login" state={{from: location}} /> 
+    if(!currentUser) {
+        return <Navigate to="/login" state={{from: location}} /> 
+    }
+    return children
     
 }
 

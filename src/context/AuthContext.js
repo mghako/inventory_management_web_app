@@ -1,9 +1,5 @@
-import axios from 'axios'
+import api from '../api'
 import React, { useContext, useState } from 'react'
-axios.defaults.withCredentials = true
-axios.defaults.baseURL = 'http://localhost:8000'
-axios.defaults.headers.post['Content-Type'] = 'application/json';
-axios.defaults.headers.post['Accept'] = 'application/json';
 
 const AuthContext = React.createContext()
 
@@ -15,15 +11,20 @@ export function AuthProvider({children}) {
 
     const [currentUser, setCurrentUser] = useState()
 
+    const logout = async () => {
+        localStorage.removeItem('currentUser')
+        
+    }
+
     const register = async (name, email, password) => {
         try {
-         const cookie = await axios.get('/sanctum/csrf-cookie')
-         console.log("cookie ", cookie)
-         await axios.post('/api/v1/webapp/auth/register', {
+         await api().get('/sanctum/csrf-cookie')
+         const response = await api().post('/api/v1/webapp/auth/register', {
              name,
              email,
              password
          })
+         console.log(response.data)
         }
         catch(e) { 
              console.log("catch ", e.response.data)
@@ -34,8 +35,8 @@ export function AuthProvider({children}) {
      
     const login = async (email, password) => {
         try {
-            await axios.get('/sanctum/csrf-cookie')
-            const response = await axios.post('/api/v1/webapp/auth/login', {
+            await api().get('/sanctum/csrf-cookie')
+            const response = await api().post('/api/v1/webapp/auth/login', {
                 email,
                 password
             })
@@ -53,7 +54,8 @@ export function AuthProvider({children}) {
     const value = {
         currentUser,
         register,
-        login
+        login,
+        logout
     }
 
     return (
