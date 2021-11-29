@@ -21,7 +21,7 @@ const Login = () => {
         
         if(response && response.status === 500) setError(response.data.message)
 
-        if(response && response.status == 200) navigate(from, {replace: true})
+        if(response && response.status === 200) navigate(from, {replace: true})
         
         setLoading(false)
         

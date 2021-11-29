@@ -5,7 +5,7 @@ import { Navigate, useLocation} from 'react-router-dom'
 const RequireAuth = ({children}) => {
     const location = useLocation()
     const currentUser = JSON.parse(localStorage.getItem('currentUser'))
-    console.log("require auth", currentUser)
+
     if(!currentUser) {
         return <Navigate to="/login" state={{from: location}} /> 
     }

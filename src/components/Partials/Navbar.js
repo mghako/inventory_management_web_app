@@ -1,37 +1,15 @@
-import React, {useState, useEffect} from 'react'
-import api from '../api';
-import Header from '../components/Partials/Header';
-import { useAuth } from '../context/AuthContext';
+import React, {useState} from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
-const Dashboard = () => {
+const Navbar = () => {
 
-    const {logout} = useAuth()
-    const [pageTitle] = useState('Dashboard')
     const [profileDropDown, setProfileDropDown] = useState(false)
-    const [items, setItems] = useState([])
-
-    const fetchItems = async () => {
-        try {
-            const response = await api().get('/api/v1/items')
-            if(response.status === 200) {
-                setItems(response.data)
-            }
-        }
-        catch(error) {
-
-        }
-    }
-
-    useEffect(() => {
-        fetchItems()
-    }, [])
+    const {logout} = useAuth()
 
     return (
-        <>
-        <div className="min-h-full">
-            <nav className="bg-gray-800">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav className="bg-gray-800">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex items-center justify-between h-16">
                     <div className="flex items-center">
                     <div className="flex-shrink-0">
@@ -39,9 +17,8 @@ const Dashboard = () => {
                     </div>
                     <div className="hidden md:block">
                         <div className="ml-10 flex items-baseline space-x-4">
-                        <a href="#" className="bg-gray-900 text-white px-3 py-2 rounded-md text-sm font-medium" aria-current="page">Dashboard</a>
-                        <Link to="/items" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Items</Link>
-                        <a href="#" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Users</a>
+                            <Link to="/" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Dashboard</Link>
+                            <Link to="/items" className="text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Items</Link>
                         </div>
                     </div>
                     </div>
@@ -86,9 +63,9 @@ const Dashboard = () => {
                         </button>
                     </div>
                 </div>
-                </div>
+            </div>
 
-                <div className="md:hidden" id="mobile-menu">
+            <div className="md:hidden" id="mobile-menu">
                 <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                     <a href="#" className="bg-gray-900 text-white block px-3 py-2 rounded-md text-base font-medium" aria-current="page">Dashboard</a>
 
@@ -124,19 +101,9 @@ const Dashboard = () => {
                     <a href="#" className="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700">Sign out</a>
                     </div>
                 </div>
-                </div>
-            </nav>
-            <Header title={pageTitle}/>
-            <main>
-                <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-                <div className="px-4 py-6 sm:px-0">
-                    <div className="border-4 border-dashed border-gray-200 rounded-lg h-96"></div>
-                </div>
-                </div>
-            </main>
-        </div>
-        </>
+            </div>
+        </nav>
     )
 }
 
-export default Dashboard
+export default Navbar
