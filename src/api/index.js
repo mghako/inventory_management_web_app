@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { Navigate } from 'react-router'
 
 export default function api() {
     const api = axios.create({
@@ -10,7 +11,8 @@ export default function api() {
         if (error.response.status === 401) {
             localStorage.removeItem('currentUser')
 
-            return Promise.reject()
+            Promise.reject()
+            return <Navigate to="/login" />
         }
 
         return Promise.reject(error)

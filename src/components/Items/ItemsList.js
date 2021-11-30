@@ -1,6 +1,9 @@
 import React, {useState, useEffect} from 'react'
 import api from '../../api'
+import Button from '../Form/Button'
+import TableSettingContainer from '../Form/TableSettingContainer'
 import Item from './Item'
+import { Link } from 'react-router-dom'
 
 const ItemsList = () => {
     
@@ -11,7 +14,6 @@ const ItemsList = () => {
         const response = await api().get('/api/v1/items')
         if(response.status === 200) {
             setItems(response.data)
-            console.log("response data", response.data)
         }
     }
 
@@ -29,6 +31,11 @@ const ItemsList = () => {
     }, [])
 
     return (
+        <>
+        <TableSettingContainer>
+            <Link to="/items/create" className="bg-green-600 rounded py-1 px-2 text-white hover:bg-green-800"><i className="fas fa-plus"></i> Add Item</Link>
+        </TableSettingContainer>
+        
         <div className="flex flex-col">
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
@@ -61,6 +68,7 @@ const ItemsList = () => {
                 </div>
             </div>
         </div>
+        </>
     )
 }
 export default ItemsList

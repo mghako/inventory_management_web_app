@@ -5,7 +5,8 @@ import { Routes, Route } from "react-router-dom";
 import Login from '../pages/Login';
 import RequireAuth from './Auth/RequireAuth';
 import PublicAuth from './Auth/PublicAuth';
-import Items from '../pages/Items';
+import ItemsIndex from '../pages/Items/ItemsIndex';
+import CreateItem from '../pages/Items/CreateItem';
 import Layout from '../pages/Layout';
 
 function App() {
@@ -32,7 +33,13 @@ function App() {
           />
           <Route exact path='/items' element={
             <RequireAuth>  
-              <Items/>
+              <ItemsIndex/>
+            </RequireAuth>
+            }
+          />
+          <Route exact path='/items/create' element={
+            <RequireAuth>  
+              <CreateItem />
             </RequireAuth>
             }
           />
