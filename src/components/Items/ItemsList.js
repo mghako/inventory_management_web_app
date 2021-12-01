@@ -4,22 +4,31 @@ import Button from '../Form/Button'
 import TableSettingContainer from '../Form/TableSettingContainer'
 import Item from './Item'
 import { Link } from 'react-router-dom'
+import Pagination from '../Utils/Pagination'
 
 const ItemsList = () => {
     
     const [items, setItems] = useState([])
-    
+    const [meta, setMeta] = useState()
 
     const fetchItems =  async () => {
         const response = await api().get('/api/v1/items')
         if(response.status === 200) {
-            setItems(response.data)
+            setItems(response.data.data)
+            setMeta(response.data.meta)
         }
     }
 
     const itemsData = items.map( (item) =>
             <Item key={item.id} item={item}/>
     )
+
+    const handlePaginationClick = async (link) => {
+        console.log("clicked ",link)
+        const response = await api().get(link.url)
+        setItems(response.data.data)
+        setMeta(response.data.meta)
+    }
 
     useEffect(() => {
         let apiSubscribed = true
@@ -64,10 +73,13 @@ const ItemsList = () => {
                                 {itemsData}
                             </tbody>
                         </table>
+                        
                     </div>
+                    { meta && <Pagination meta={meta} handlePaginationClick={handlePaginationClick} /> }
                 </div>
             </div>
         </div>
+
         </>
     )
 }

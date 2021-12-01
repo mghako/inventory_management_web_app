@@ -9,6 +9,7 @@ import Layout from '../Layout'
 import api from '../../api'
 import NumberInput from '../../components/Form/NumberInput'
 import ErrorText from '../../components/Form/ErrorText'
+import TextField from '../../components/Form/TextField'
 
 const CreateItem = () => {
     const nameRef = React.createRef()
@@ -27,8 +28,9 @@ const CreateItem = () => {
                 price: priceRef.current.value,
                 size: sizeRef.current.value,
                 color: colorRef.current.value,
-                description: 'blah blah'
+                description: descriptionRef.current.value
             })
+            console.log(response)
         }
         catch(error) {
             setErrors(error.response.data.errors)
@@ -49,17 +51,18 @@ const CreateItem = () => {
                         <Label name={"price"} />
                         <NumberInput name={"price"} ref={priceRef} />
                     </FormRow>
-                    {/* <ErrorText text={errors.price && errors.price} /> */}
                     <FormRow>
                         <Label name={"size"} />
                         <TextInput name={"size"} ref={sizeRef} />
                     </FormRow>
-                    {/* <ErrorText text={errors.size && errors.size} /> */}
                     <FormRow>
                         <Label name={"color"} />
                         <TextInput name={"color"} ref={colorRef} />
                     </FormRow>
-                    {/* <ErrorText text={errors.color && errors.color} /> */}
+                    <FormRow>
+                        <Label name={"description"} />
+                        <TextField name={"description"} ref={descriptionRef} />
+                    </FormRow>
                     <TableSettingContainer>
                         <SubmitButton name={"Add Item"}>
                             <i className="fas fa-save"></i>
